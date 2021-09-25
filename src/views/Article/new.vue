@@ -28,6 +28,7 @@
 <script>
 import RichEditor from '@/components/Editor/richEditor.vue'
 import { defineComponent, reactive, toRefs } from '@vue/runtime-core'
+import { ElMessage } from 'element-plus/lib/components/message'
 import { useRouter } from 'vue-router'
 import { postArticle } from './api'
 
@@ -66,6 +67,10 @@ export default defineComponent({
       postArticle(postdata).then((res) => {
         const { data } = res
         // 跳至编辑页面
+        ElMessage({
+          type: 'success',
+          message: '发布成功，跳转至编辑页面'
+        })
         useRouter1.push(`/article/edit?id=${data.id}`)
       })
     }

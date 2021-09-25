@@ -161,6 +161,10 @@ export default defineComponent({
   &.mobile.openSidebar {
     position: fixed;
     top: 0;
+    z-index: 20000;
+  }
+  .sidebar-container {
+    z-index: 20000;
   }
 }
 .drawer-bg {
@@ -170,7 +174,7 @@ export default defineComponent({
   top: 0;
   height: 100%;
   position: absolute;
-  z-index: 999;
+  z-index: 10999;
 }
 .setting-item {
   margin-bottom: 24px;

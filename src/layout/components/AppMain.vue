@@ -15,12 +15,12 @@
         :label="item.title[lang]"
         :name="item.route"
       ></el-tab-pane>
+
       <router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" :key="$route.path" />
         </transition>
       </router-view>
-
       <router-view v-else v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <keep-alive>
@@ -68,6 +68,7 @@ export default defineComponent({
      * @description 点击tab
      */
     const clickTab = (tabName: { paneName: string }) => {
+      console.log('点击tab', currentIndex)
       // eslint-disable-next-line no-console
       store.commit('tabModule/SET_TAB', tabName.paneName)
       router.replace({ path: currentIndex.value })

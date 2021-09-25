@@ -28,6 +28,7 @@
 <script>
 import RichEditor from '@/components/Editor/richEditor.vue'
 import { defineComponent, onMounted, reactive, toRefs } from '@vue/runtime-core'
+import { ElMessage } from 'element-plus/lib/components/message'
 import { useRoute } from 'vue-router'
 import { putArticle, getArticleDetail } from './api'
 
@@ -81,7 +82,17 @@ export default defineComponent({
       putArticle(postdata).then((res) => {
         const { data } = res
         console.log(data)
-        // 跳至编辑页面
+        if (data.result === true) {
+          ElMessage({
+            message: '更新成功',
+            type: 'success'
+          })
+        } else {
+          ElMessage({
+            message: '更新失败',
+            type: 'error'
+          })
+        }
       })
     }
     return {

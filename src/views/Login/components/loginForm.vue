@@ -178,45 +178,38 @@ export default defineComponent({
     const submitForm = () => {
       loginFormRef.value.validate(async (valid: any) => {
         if (valid) {
-          try {
-            const { email, password } = state.loginForm
-            const data = {
-              stuId: email,
-              // password
-              stuPass: encrypt(password)
-            }
-            const res = await Service.postLogin(data)
-            const userInfo = await Service.postAuthUserInfo({ email })
+          const { email, password } = state.loginForm
+          const data = {
+            stuId: email,
+            // password
+            stuPass: encrypt(password)
+          }
+          const res = await Service.postLogin(data)
+          const userInfo = await Service.postAuthUserInfo({ email })
 
-            const auth = res?.data?.auth ?? null
-            if (auth) {
-              // 将角色存储到全局vuex roles
-              console.log(userInfo)
-              if (userInfo.status === 0) {
-                store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
-              }
-              // 先进行异步路由处理
-              store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
-              store.dispatch('permissionModule/getPermissions')
-              sessionStorage.setItem('auth', 'true')
-              sessionStorage.setItem('tokenName', auth[0])
-              sessionStorage.setItem('accessToken', auth[1])
-              if (route.query.redirect) {
-                const path = route.query.redirect
-                router.push({ path: path as string })
-              } else {
-                router.push('/')
-              }
-            } else {
-              ElMessage({
-                type: 'warning',
-                message: '账号或者密码有误'
-              })
+          const auth = res?.data?.auth ?? null
+          if (auth) {
+            // 将角色存储到全局vuex roles
+            console.log(userInfo)
+            if (userInfo.status === 0) {
+              store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
             }
-          } catch (err) {
+            // 先进行异步路由处理
+            store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
+            store.dispatch('permissionModule/getPermissions')
+            sessionStorage.setItem('auth', 'true')
+            sessionStorage.setItem('tokenName', auth[0])
+            sessionStorage.setItem('accessToken', auth[1])
+            if (route.query.redirect) {
+              const path = route.query.redirect
+              router.push({ path: path as string })
+            } else {
+              router.push('/')
+            }
+          } else {
             ElMessage({
               type: 'warning',
-              message: err.message
+              message: '账号或者密码有误'
             })
           }
         }
