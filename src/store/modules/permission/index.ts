@@ -39,16 +39,13 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
   },
   actions: {
     // 异步接口请求，动态添加路由
-     getPermissonRoutes({ commit },payload:any) {
+     getPermissonRoutes({ commit },) {
       // api request
-      const data={
-        roleName:payload.roleName
-      }
       // 后端根据角色名称，查询授权菜单
-      Service.postAuthPermission(data).then(res=>{
+      Service.getAuthPermission().then(res=>{
         const {authedRoutes}=res.data;
         commit('setAuthedRoutes', authedRoutes);
-               // 过滤只显示授权菜单
+        // 过滤只显示授权菜单
         const accessedRoutes: RouteRecordRaw[]=[]
 
         for(const path of authedRoutes){

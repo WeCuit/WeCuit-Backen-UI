@@ -5,7 +5,7 @@ import { resolve } from 'path';
 import styleImport from 'vite-plugin-style-import'
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/vue3.0-template-admin/',             // 设开发或生产环境服务的 公共基础路径
+  base: '/admin/',             // 设开发或生产环境服务的 公共基础路径
   define: {              // 类型： Record<string, string> 定义全局变量替换方式。每项在开发时会被定义为全局变量，而在构建时则是静态替换。
     'process.platform': null,
     'process.version': null,
@@ -43,15 +43,20 @@ export default defineConfig({
 
     // 服务配置
     port: 4399,    // 类型： number 指定服务器端口;
-    open: true,   // 类型： boolean | string在服务器启动时自动在浏览器中打开应用程序；
+    open: false,   // 类型： boolean | string在服务器启动时自动在浏览器中打开应用程序；
     cors: true,  // 类型： boolean | CorsOptions 为开发服务器配置 CORS。默认启用并允许任何源
     proxy: {    // 类型： Record<string, string | ProxyOp 为开发服务器配置自定义代理规则
-      '/api': {
-        target: 'http://106.12.45.247:3000/',
+      '/v3': {
+        target: 'http://test.cuit.api.jysafe.cn/v3',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace('/api', '')
-      }
+        rewrite: (path) => path.replace('/v3', '')
+      },
+      '/upload':{
+        target: 'http://test.cuit.api.jysafe.cn/v3',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
    // https://www.vitejs.net/config/#build-commonjsoptions

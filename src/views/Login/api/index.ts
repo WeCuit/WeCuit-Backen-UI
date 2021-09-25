@@ -1,7 +1,8 @@
 import request from '@/utils/request';
+import request2 from '@/utils/axios'
 
 const loginApi={
-  userLogin: '/api/auth/user/login',
+  userLogin: '/auth/user/login',
   userRegister:'/api/auth/user/register',
   sendCaptcha:'/api/auth/email/sendCaptcha',
   forgetPassword:'/api/auth/email/forgot-password',
@@ -15,17 +16,7 @@ class Service{
    * @description POST 用户登录接口
   */
   static postLogin(data: any) {
-    return request({
-      url: loginApi.userLogin,
-      method: 'POST',
-      json: true,
-      data
-    }).then((res) => {
-      if (res.status === 0) {
-      return Promise.resolve(res)
-      }
-      return Promise.reject(res)
-    })
+    return request2.post(loginApi.userLogin, data)
   }
 
   /**

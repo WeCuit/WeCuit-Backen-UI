@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-alert title="Tips:点击【新增】按钮进行新增角色；点击【编辑】按钮，进行不同角色的菜单授权操作！" type="warning"> </el-alert>
-    <el-alert title="Tips:权限控制体验：【管理员账号为：admin@outlook.com】、【超级管理员账号为：super@outlook.com】" type="info"> </el-alert>
+    <el-alert title="Tips:点击【新增】按钮进行新增角色；点击【编辑】按钮，进行不同角色的菜单授权操作！" type="warning"></el-alert>
+    <el-alert
+      title="Tips:权限控制体验：【管理员账号为：admin@outlook.com】、【超级管理员账号为：super@outlook.com】"
+      type="info"
+    ></el-alert>
     <el-card class="card-ctrl">
       <el-row>
         <el-col :span="8" style="text-align: left">
@@ -11,10 +14,12 @@
       </el-row>
       <br />
       <el-table v-loading="loading" :data="data" stripe class="table">
-        <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
+        <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
         <el-table-column prop="state" label="角色状态" align="center">
           <template #default="scope">
-            <el-tag v-if="scope.row.state == 0" size="mini" type="info"><i class="ic ic-lock"></i> 锁定</el-tag>
+            <el-tag v-if="scope.row.state == 0" size="mini" type="info">
+              <i class="ic ic-lock"></i> 锁定
+            </el-tag>
             <el-tag v-else-if="scope.row.state == 1" size="mini" type="success">正常</el-tag>
             <el-tag v-else size="mini" type="danger">未知</el-tag>
           </template>
@@ -24,10 +29,30 @@
         <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-tooltip class="item" effect="dark" content="菜单授权" placement="bottom">
-              <el-button circle plain type="primary" icon="el-icon-edit" size="small" @click="onEdit(scope.$index, scope.row)"></el-button>
+              <el-button
+                circle
+                plain
+                type="primary"
+                icon="el-icon-edit"
+                size="small"
+                @click="onEdit(scope.$index, scope.row)"
+              ></el-button>
             </el-tooltip>
-            <el-tooltip v-if="scope.row.state != 0" class="item" effect="dark" content="删除" placement="bottom">
-              <el-button circle plain type="danger" icon="el-icon-minus" size="small" @click="onDelete(scope.$index, scope.row)"> </el-button>
+            <el-tooltip
+              v-if="scope.row.state != 0"
+              class="item"
+              effect="dark"
+              content="删除"
+              placement="bottom"
+            >
+              <el-button
+                circle
+                plain
+                type="danger"
+                icon="el-icon-minus"
+                size="small"
+                @click="onDelete(scope.$index, scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -42,39 +67,44 @@
           background
           @current-change="onCurrentChange"
           @size-change="onSizeChange"
-        >
-        </el-pagination>
+        ></el-pagination>
       </div>
     </el-card>
 
-    <el-dialog v-model="edit_visible" center :title="posted.role.roleName">
+    <!-- 编辑角色菜单 -->
+    <el-dialog v-model="edit_visible" center :title="posted.role.roleName" width="70%">
       <role-edit :current-role="posted" @success="onEditSuccess"></role-edit>
     </el-dialog>
+    <!-- 新增角色 -->
     <el-dialog v-model="add_visible" title="新增角色">
-      <role-new @success="onCreateSuccess"></role-new>
+      <role-new @success="onCreateNewRole"></role-new>
     </el-dialog>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus/lib/components'
-import RoleEdit from './rolesEdit.vue'
+import RoleEdit from './rolesMenuEdit.vue'
 import RoleNew from './rolesNew.vue'
+import { getRoleList, deleteRoleItem, postNewRole } from './api'
 
-const useConfirmDelete = (index: any) => {
-  console.log(index)
-  ElMessageBox.confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+const useConfirmDelete = (id: any) => {
+  console.log('删除的ID:', id)
+  return ElMessageBox.confirm('此操作将永久删除该数据, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
-    .then(() => {
+    .then(() =>
       // 此处执行接口异步删除角色
-      ElMessage({
-        type: 'success',
-        message: '删除成功'
+      deleteRoleItem(id).then((res) => {
+        console.log(res)
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
       })
-    })
+    )
     .catch(() => {
       ElMessage({
         type: 'info',
@@ -101,9 +131,8 @@ export default defineComponent({
         page: 1
       },
       data: [
-        { roleName: '超级管理员', remark: '拥有删除和创建等操作的权限', state: 0 },
-        { roleName: '管理员', remark: '拥有创建和权限分配的权限', state: 0 },
-        { roleName: '游客', remark: '只拥有操作部分菜单的权限', state: 1 }
+        { id: 1, name: '超级管理员', remark: '拥有删除和创建等操作的权限', state: 0 },
+        { id: 2, name: '管理员', remark: '测试', state: 0 }
       ],
       loading: false,
       is_search: false,
@@ -122,7 +151,15 @@ export default defineComponent({
     /**
      * @description 请求接口获取当前设置角色，默认始终有超级管理员角色
      */
-    const fetchData = () => {}
+    const fetchData = () => {
+      console.log('获取角色列表')
+      getRoleList().then((res) => {
+        console.log(res)
+        state.data = res.data
+      })
+    }
+    fetchData()
+
     const onCurrentChange = () => {
       fetchData()
     }
@@ -130,15 +167,20 @@ export default defineComponent({
       state.param.limit = val
       fetchData()
     }
+
+    // 点击新增操作
     const onCreate = () => {
       state.add_visible = true
     }
-    const onCreateSuccess = (val: any) => {
-      console.log(val)
-      const newRole = { roleName: val.roleName, remark: val.remark, state: 1 }
-      state.data.push(newRole)
+
+    // 提交新增角色数据
+    const onCreateNewRole = (val: any) => {
       state.add_visible = false
-      fetchData()
+      const newRole = { name: val.roleName, remark: val.remark, state: 1 }
+      postNewRole(newRole).then((res) => {
+        console.log(res)
+        fetchData()
+      })
     }
     const onEditSuccess = () => {
       state.edit_visible = false
@@ -149,7 +191,7 @@ export default defineComponent({
       fetchData()
     }
     /**
-     * @description 选择点击编辑授权角色；roleName
+     * @description 选择点击编辑授权角色；name
      */
     const onEdit = (index: any, row: any) => {
       console.log('row', row)
@@ -158,7 +200,9 @@ export default defineComponent({
     }
     const onDelete = (index: any, row: any) => {
       console.log(index, row)
-      useConfirmDelete(index)
+      useConfirmDelete(row.id).then(() => {
+        fetchData()
+      })
     }
     return {
       ...toRefs(state),
@@ -166,7 +210,7 @@ export default defineComponent({
       onCurrentChange,
       onSizeChange,
       onCreate,
-      onCreateSuccess,
+      onCreateNewRole,
       onEditSuccess,
       onRefresh,
       onEdit,

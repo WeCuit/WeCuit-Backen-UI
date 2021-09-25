@@ -10,7 +10,7 @@
           <el-table v-loading="loading" :data="data" stripe class="table">
             <el-table-column label="菜单名称" align="center">
               <template #default="scope">
-                <span>{{ scope.row.meta.title[lang] }}</span>
+                <span>{{ scope.row.name }}</span>
               </template>
             </el-table-column>
             <!-- <el-table-column prop="state" label="菜单状态" align="center">
@@ -19,10 +19,10 @@
                 <el-tag v-else-if="scope.row.state === 1" size="mini" type="success">正常</el-tag>
                 <el-tag v-else size="mini" type="danger">未知</el-tag>
               </template>
-            </el-table-column> -->
+            </el-table-column>-->
             <el-table-column label="图标" align="center">
               <template #default="scope">
-                <i :class="scope.row.meta.icon"></i>
+                <i :class="scope.row.icon"></i>
               </template>
             </el-table-column>
             <el-table-column label="路径" align="center">
@@ -34,10 +34,24 @@
               <template #default="scope">
                 <template v-if="scope.row.state != 0">
                   <el-tooltip class="item" effect="dark" content="修改" placement="bottom">
-                    <el-button circle plain type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.$index, scope.row)"> </el-button>
+                    <el-button
+                      circle
+                      plain
+                      type="primary"
+                      icon="el-icon-edit"
+                      size="mini"
+                      @click="onEdit(scope.$index, scope.row)"
+                    ></el-button>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark" content="删除" placement="bottom">
-                    <el-button circle plain type="danger" icon="el-icon-minus" size="mini" @click="onDelete(scope.$index, scope.row)"> </el-button>
+                    <el-button
+                      circle
+                      plain
+                      type="danger"
+                      icon="el-icon-minus"
+                      size="mini"
+                      @click="onDelete(scope.$index, scope.row)"
+                    ></el-button>
                   </el-tooltip>
                 </template>
               </template>
@@ -53,8 +67,7 @@
               background
               @current-change="onCurrentChange"
               @size-change="onSizeChange"
-            >
-            </el-pagination>
+            ></el-pagination>
           </div>
         </el-col>
       </el-row>
@@ -62,7 +75,7 @@
     <el-dialog v-model="addVisible" width="632px" title="新增菜单">
       <menu-new @success="onAddSuccess"></menu-new>
     </el-dialog>
-    <el-dialog v-model="editVisible" center width="632px" :title="posted.menu.meta.title">
+    <el-dialog v-model="editVisible" center width="632px" :title="posted.menu.name">
       <menu-edit :current-menu="posted.menu" @success="onEditSuccess"></menu-edit>
     </el-dialog>
   </div>
@@ -71,9 +84,9 @@
 import { defineComponent, onMounted, reactive, toRefs, computed } from 'vue'
 import { useStore } from '@/store'
 import { ElMessage, ElMessageBox } from 'element-plus/lib/components'
-import { RouteRecordRaw } from 'vue-router'
 import MenuNew from './menuNew.vue'
-import MenuEdit from './menuEdits.vue'
+import MenuEdit from './menuEdit.vue'
+import { getMenuList } from './api'
 
 const useConfirmDelete = (index: any) => {
   console.log(index)
@@ -101,7 +114,11 @@ interface stateTypes {
     limit: Number
     page: Number
   }
-  data: Array<RouteRecordRaw>
+  data: Array<{
+    name: String
+    path: String
+    icon: String
+  }>
   total: Number
   loading: Boolean
   addVisible: Boolean
@@ -109,11 +126,9 @@ interface stateTypes {
   detailVisible: Boolean
   posted: {
     menu: {
+      name: String
       path: String
-      meta: {
-        title: String
-        icon: String
-      }
+      icon: String
     }
   }
 }
@@ -137,23 +152,9 @@ export default defineComponent({
       },
       data: [
         {
-          path: '/',
-          redirect: '/home',
-          meta: {
-            title: '首页',
-            icon: 'el-icon-s-home'
-          },
-          children: [
-            {
-              path: '/home',
-              name: 'home',
-              component: () => import(/* webpackChunkName: "home" */ '@/views/Home/home.vue'),
-              meta: {
-                title: '首页',
-                icon: 'home'
-              }
-            }
-          ]
+          name: '首页',
+          icon: 'el-icon-s-home',
+          path: '/'
         }
       ],
       total: 1,
@@ -163,19 +164,18 @@ export default defineComponent({
       detailVisible: false,
       posted: {
         menu: {
-          path: '',
-          meta: {
-            title: '',
-            icon: ''
-          }
+          name: '',
+          icon: '',
+          path: ''
         }
       }
     })
-    const routes = computed(() => store.state.permissionModule.accessRoutes)
+    // const routes = computed(() => store.state.permissionModule.accessRoutes)
 
     const initTableData = () => {
-      const result = routes.value.filter((item) => item?.meta?.hidden !== true)
-      state.data = result
+      getMenuList().then((res: any) => {
+        state.data = res.data
+      })
     }
     /**
      * @description 此处做异步请求处理
@@ -183,6 +183,9 @@ export default defineComponent({
     const fetchData = (val?: any) => {
       // handle val
       console.log(val)
+      getMenuList().then((res: any) => {
+        state.data = res.data
+      })
     }
     const onCurrentChange = (val: any) => {
       fetchData(val)
