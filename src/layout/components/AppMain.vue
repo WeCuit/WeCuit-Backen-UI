@@ -46,6 +46,7 @@ export default defineComponent({
     const lang = computed(() => store.getters['settingsModule/getLangState'])
 
     const router = useRouter()
+
     // mothods
     /**
      * @description 移除tab
@@ -58,9 +59,9 @@ export default defineComponent({
       if (currentIndex.value === tabName) {
         if (tabsOption.value && tabsOption.value.length) {
           store.commit('tabModule/SET_TAB', tabsOption.value[tabsOption.value.length - 1].route)
-          router.replace({ path: currentIndex.value })
+          router.replace(currentIndex.value)
         } else {
-          router.replace({ path: '/' })
+          router.replace('/')
         }
       }
     }
@@ -71,7 +72,7 @@ export default defineComponent({
       console.log('点击tab', currentIndex)
       // eslint-disable-next-line no-console
       store.commit('tabModule/SET_TAB', tabName.paneName)
-      router.replace({ path: currentIndex.value })
+      router.replace(currentIndex.value)
     }
     return {
       tabsOption,
