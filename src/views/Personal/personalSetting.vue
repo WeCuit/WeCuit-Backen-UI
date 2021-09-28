@@ -28,31 +28,27 @@
                       label-width="100px"
                       class="demo-ruleForm"
                     >
-                      <el-form-item label="邮箱" prop="email">
-                        <el-input v-model="settingForm.email" placeholder="请输入邮箱"></el-input>
-                      </el-form-item>
                       <el-form-item label="昵称" prop="nickname">
                         <el-input v-model="settingForm.nickname" placeholder="请输入昵称" maxlength="10"></el-input>
                       </el-form-item>
-                      <el-form-item label="个人简介" prop="desc">
+                      <el-form-item label="邮箱" prop="email">
+                        <el-input v-model="settingForm.email" placeholder="请输入邮箱"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="个人简介" prop="desc">
                         <el-input
                           v-model="settingForm.desc"
                           type="textarea"
                           placeholder="个人简介"
                           maxlength="120"
                         ></el-input>
-                      </el-form-item>
+                      </el-form-item>-->
 
-                      <el-form-item label="联系电话" prop="mobile">
+                      <!-- <el-form-item label="联系电话" prop="mobile">
                         <el-input v-model="settingForm.mobile" placeholder="请输入11位大陆手机号码"></el-input>
-                      </el-form-item>
+                      </el-form-item>-->
 
                       <el-form-item>
-                        <el-button
-                          type="primary"
-                          :loading="updateLoading"
-                          @click="submitForm()"
-                        >更新基本信息</el-button>
+                        <el-button type="primary" :loading="updateLoading" @click="submitForm()">更新</el-button>
                         <el-button @click="resetForm()">重置</el-button>
                       </el-form-item>
                     </el-form>
@@ -80,7 +76,7 @@
                 <div class="set-title">
                   <span>安全设置</span>
                 </div>
-                <div class="secure-item">
+                <!-- <div class="secure-item">
                   <div class="secure-info">
                     <span class="secure-key">账户密码</span>
                     <span class="secure-value">当前密码强度：强</span>
@@ -88,8 +84,8 @@
                   <div class="opera-btn">
                     <span>修改</span>
                   </div>
-                </div>
-                <div class="secure-item">
+                </div>-->
+                <!-- <div class="secure-item">
                   <div class="secure-info">
                     <span class="secure-key">密保手机</span>
                     <span class="secure-value">已绑定手机：138****2234</span>
@@ -97,7 +93,7 @@
                   <div class="opera-btn">
                     <span>修改</span>
                   </div>
-                </div>
+                </div>-->
                 <div class="secure-item">
                   <div class="secure-info">
                     <span class="secure-key">绑定邮箱</span>
@@ -169,7 +165,7 @@
 import { ElMessage } from 'element-plus/lib/components'
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import Service from './api/index'
+import { getUserInfo, putUserInfo } from './api/index'
 
 // eslint-disable-next-line no-unused-vars
 type VoidNoop = (arg0?: Error) => void
@@ -188,7 +184,8 @@ export default defineComponent({
       email: '',
       nickname: '',
       desc: '',
-      mobile: ''
+      mobile: '',
+      avatar: '../../assets/avatar-default.jpg'
     })
     const imageUrl = ref()
     const updateLoading = ref(false)
@@ -217,7 +214,15 @@ export default defineComponent({
       desc: { required: true, message: '请输入个人简介', trigger: ['blur', 'change'] },
       mobile: { required: true, validator: validateMobile, trigger: ['blur', 'change'] }
     }
-    onMounted(() => {})
+    onMounted(() => {
+      getUserInfo().then((res) => {
+        const { data } = res
+        const { info } = data
+        settingForm.email = info.email
+        settingForm.nickname = info.nickname
+        if (info.avatar) settingForm.avatar = info.avatar
+      })
+    })
     // methods
 
     const handleBack = () => {
@@ -231,13 +236,20 @@ export default defineComponent({
             const data = {
               ...settingForm
             }
-            const res = await Service.postSetBasicInfo(data)
-            console.log(res)
+            const res = await putUserInfo(data)
             updateLoading.value = false
-            ElMessage({
-              type: 'success',
-              message: res.data.message
-            })
+            const { result } = res.data
+            if (result === true) {
+              ElMessage({
+                type: 'success',
+                message: '更新成功'
+              })
+            } else {
+              ElMessage({
+                type: 'error',
+                message: '更新失败'
+              })
+            }
           } catch (err) {
             console.error(err)
           }
@@ -265,7 +277,7 @@ export default defineComponent({
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isLt2M) {
-        ElMessage.error('上传头像图片大小不能超过 2MB!')
+        ElMessage({ type: 'error', message: '上传头像图片大小不能超过 2MB!' })
       }
       return isLt2M
     }
@@ -324,12 +336,12 @@ export default defineComponent({
     flex-direction row
     justify-content space-around
     align-items flex-start
-    .form-info
-    .avatar
+    .form-info, .avatar
       display flex
       flex-direction row
       justify-content flex-start
       align-items flex-end
+      margin-left 30px
       .preview
         display flex
         flex-direction column
@@ -337,8 +349,8 @@ export default defineComponent({
         align-items flex-start
         margin-right 20px
         img
-          width 174px
-          height 174px
+          width 100px
+          height 100px
           border-radius 50%
       .avatar-uploader .el-upload:hover
         border-color #409EFF

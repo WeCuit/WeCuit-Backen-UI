@@ -180,9 +180,9 @@ export default defineComponent({
         if (valid) {
           const { email, password } = state.loginForm
           const data = {
-            stuId: email,
+            login: email,
             // password
-            stuPass: encrypt(password)
+            password: encrypt(password)
           }
           const res = await Service.postLogin(data)
           const userInfo = await Service.postAuthUserInfo({ email })

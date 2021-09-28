@@ -47,13 +47,13 @@ export default defineConfig({
     cors: true,  // 类型： boolean | CorsOptions 为开发服务器配置 CORS。默认启用并允许任何源
     proxy: {    // 类型： Record<string, string | ProxyOp 为开发服务器配置自定义代理规则
       '/v3': {
-        target: 'http://test.cuit.api.jysafe.cn/v3',
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace('/v3', '')
       },
       '/upload':{
-        target: 'http://test.cuit.api.jysafe.cn/v3',
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         secure: false,
       },
