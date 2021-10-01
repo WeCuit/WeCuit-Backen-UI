@@ -13,6 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-weixindenglu:before {
+  content: '\e606';
+}
+
+.ic-qqdenglu:before {
+  content: '\e60c';
+}
+
 .ic-ice-cream-square:before {
   content: '\e6a4';
 }

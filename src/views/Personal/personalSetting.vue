@@ -154,6 +154,14 @@
                   </el-tooltip>
                 </div>
               </el-tab-pane>
+              <el-tab-pane label="账号绑定">
+                <div class="set-title">
+                  <span>账号绑定</span>
+                </div>
+                <div style="margin-top:3rem">
+                  <mini-login></mini-login>
+                </div>
+              </el-tab-pane>
             </el-tabs>
           </el-card>
         </div>
@@ -165,12 +173,16 @@
 import { ElMessage } from 'element-plus/lib/components'
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import MiniLogin from './components/MiniBind/index.vue'
 import { getUserInfo, putUserInfo } from './api/index'
 
 // eslint-disable-next-line no-unused-vars
 type VoidNoop = (arg0?: Error) => void
 export default defineComponent({
   name: 'PersonalSetting',
+  components: {
+    MiniLogin
+  },
   setup() {
     const router = useRouter()
     const tabPosition = ref('left')

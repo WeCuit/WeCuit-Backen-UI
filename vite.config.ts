@@ -3,6 +3,9 @@ import vue from '@vitejs/plugin-vue';
 import legacy from '@vitejs/plugin-legacy'
 import { resolve } from 'path';
 import styleImport from 'vite-plugin-style-import'
+
+const API = 'http://127.0.0.1:8080'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/admin/',             // 设开发或生产环境服务的 公共基础路径
@@ -47,13 +50,13 @@ export default defineConfig({
     cors: true,  // 类型： boolean | CorsOptions 为开发服务器配置 CORS。默认启用并允许任何源
     proxy: {    // 类型： Record<string, string | ProxyOp 为开发服务器配置自定义代理规则
       '/v3': {
-        target: 'http://127.0.0.1:8080',
+        target: `${API  }`,
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace('/v3', '')
+        rewrite: (path) => path.replace('/v3', '/admin')
       },
       '/upload':{
-        target: 'http://127.0.0.1:8080',
+        target: `${API}/v3`,
         changeOrigin: true,
         secure: false,
       },

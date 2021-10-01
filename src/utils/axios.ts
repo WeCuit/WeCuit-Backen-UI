@@ -100,7 +100,7 @@ request.interceptors.response.use(
           // store.commit("loginSuccess", null);
           store.commit("set_isLogin", false);
           router.push({
-            path: "/user/login",
+            path: "/login",
             query: {
               redirect: router.currentRoute.value.fullPath
             }

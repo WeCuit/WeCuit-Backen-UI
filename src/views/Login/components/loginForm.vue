@@ -11,18 +11,14 @@
       class="login-form"
     >
       <el-form-item label="账号" prop="email">
-        <el-input
-          v-model="loginForm.email"
-          autocomplete="off"
-          placeholder="请输入登录邮箱(super@outlook.com)"
-        ></el-input>
+        <el-input v-model="loginForm.email" autocomplete="off" placeholder="请输入登录邮箱"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
           v-model="loginForm.password"
           type="password"
           autocomplete="off"
-          placeholder="请输入密码(12345678)"
+          placeholder="请输入密码"
         ></el-input>
       </el-form-item>
 
