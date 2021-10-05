@@ -72,30 +72,35 @@ export default defineComponent({
     const doLoginAction = async () => {
       const res = await getMiniLogin(state.token)
       const auth = res?.data?.auth ?? null
-      const userInfo = await Service.postAuthUserInfo({ email: 'super@outlook.com' })
-      if (auth) {
-        // 将角色存储到全局vuex roles
-        console.log(userInfo)
-        if (userInfo.status === 0) {
-          store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
-        }
-        // 先进行异步路由处理
-        store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
-        store.dispatch('permissionModule/getPermissions')
-        sessionStorage.setItem('auth', 'true')
-        sessionStorage.setItem('tokenName', auth[0])
-        sessionStorage.setItem('accessToken', auth[1])
-        if (route.query.redirect) {
-          const path = route.query.redirect
-          router.push({ path: path as string })
+      try {
+        const userInfo = await Service.postAuthUserInfo({ email: 'super@outlook.com' })
+        if (auth) {
+          // 将角色存储到全局vuex roles
+          console.log(userInfo)
+          if (userInfo.status === 0) {
+            store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
+          }
+          // 先进行异步路由处理
+          store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
+          store.dispatch('permissionModule/getPermissions')
+          sessionStorage.setItem('auth', 'true')
+          sessionStorage.setItem('tokenName', auth[0])
+          sessionStorage.setItem('accessToken', auth[1])
+          if (route.query.redirect) {
+            const path = route.query.redirect
+            router.push({ path: path as string })
+          } else {
+            router.push('/')
+          }
         } else {
-          router.push('/')
+          ElMessage({
+            type: 'warning',
+            message: '账号或者密码有误'
+          })
         }
-      } else {
-        ElMessage({
-          type: 'warning',
-          message: '账号或者密码有误'
-        })
+      } catch (err) {
+        console.log(err)
+        cancelScan()
       }
     }
 

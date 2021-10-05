@@ -55,11 +55,14 @@ export default defineComponent({
     const submitForm = () => {
       const configData: any[] = []
       Object.getOwnPropertyNames(state.form).forEach((key) => {
-        configData.push({
-          id: state.tempForm[key].id,
+        const temp = {
           name: key,
           value: state.form[key]
-        })
+        } as {
+          [k: string]: string
+        }
+        if (state.tempForm[key]?.id) temp.id = state.tempForm[key].id
+        configData.push(temp)
       })
 
       putMiniOtherConfig(configData).then((res) => {

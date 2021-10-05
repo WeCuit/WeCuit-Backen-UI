@@ -2,8 +2,8 @@ import request from '@/utils/request';
 import request2 from '@/utils/axios'
 
 const loginApi={
-  userLogin: '/user/admin/login',
-  userRegister:'/user/admin/register',
+  userLogin: '/user/login',
+  userRegister:'/user/register',
   sendCaptcha:'/api/auth/email/sendCaptcha',
   forgetPassword:'/api/auth/email/forgot-password',
   resetPassword:`/api/auth/user/reset-password`,
