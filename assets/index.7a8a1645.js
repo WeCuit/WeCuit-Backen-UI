@@ -1,0 +1,1 @@
+import{a as i}from"./index.b07bde12.js";const e=()=>i.get("/mini/index-slide"),n=e=>i.patch("/mini/index-slide",e),s=()=>i.get("/mini/config/other"),t=e=>i.put("/mini/config/other",e);export{s as a,e as g,t as p,n as u};
