@@ -3,7 +3,7 @@
     <el-upload
       class="upload-demo"
       drag
-      action="/v3/media/upload"
+      action="/admin/media/upload"
       multiple
       accept="image/*"
       list-type="picture"

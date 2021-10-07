@@ -9,7 +9,7 @@ import router from '../router';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //  process.env.VUE_APP_BASE_URL ||
 const baseConfig = {
-  baseURL: "/v3",
+  baseURL: "/admin",
   timeout: 10 * 1000, // Timeout
   withCredentials: false // Check cross-site Access-Control
 };
