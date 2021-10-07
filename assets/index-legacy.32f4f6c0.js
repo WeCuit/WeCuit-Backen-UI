@@ -1,0 +1,1 @@
+System.register(["./index-legacy.304c10b1.js"],(function(n){"use strict";var t;return{setters:[function(n){t=n.a}],execute:function(){n("g",(function(){return t.get("/mini/index-slide")})),n("u",(function(n){return t.patch("/mini/index-slide",n)})),n("a",(function(){return t.get("/mini/config/other")})),n("p",(function(n){return t.put("/mini/config/other",n)}))}}}));
