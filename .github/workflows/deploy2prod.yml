@@ -1,0 +1,53 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - run: tar -zcvf dist.tgz dist
+
+      - name: SCP UPLOAD FILE #上传文件到服务器
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: 'dist.tgz' #打包文件的路径
+          remote: '/root/docker/code/WeCuit/dist.tgz' #放到服务器的目录
+          host: ${{ secrets.PROD_HOST }} #服务器ip地址
+          username: ${{ secrets.PROD_USERNAME }} #服务器ssh用户名
+          privateKey: ${{ secrets.PROD_PRIVATEKEY }} #服务器ssh密码
+          port: ${{ secrets.PORT }} # 服务器ssh端口（默认22）
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master # 使用ssh链接服务器
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_PRIVATEKEY }}
+          port: ${{ secrets.PORT }}
+          script: | # 执行命令（运行到服务器）cd：要确保服务器有这个目录； wget：下载上一步的release到服务器； tar：解压； 安装依赖；启动服务
+            cd /root/docker/code/WeCuit
+            tar -zxvf dist.tgz
+            rm -rf admin-ui
+            mv dist admin-ui
+            rm -f dist.tgz

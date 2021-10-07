@@ -1,0 +1,61 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [wc-main]
+  pull_request:
+    branches: [wc-main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - run: tar -zcvf dist.tgz dist
+
+      - name: Deploy To GITHUB PAGEs 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist # The folder the action should deploy.
+
+      - name: SCP UPLOAD FILE #上传文件到服务器
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: 'dist.tgz' #打包文件的路径
+          remote: '/root/docker/code/WeCuit/dist.tgz' #放到服务器的目录
+          host: ${{ secrets.TEST_HOST }} #服务器ip地址
+          username: ${{ secrets.TEST_USERNAME }} #服务器ssh用户名
+          privateKey: ${{ secrets.TEST_PRIVATEKEY }} #服务器ssh密码
+          port: ${{ secrets.PORT }} # 服务器ssh端口（默认22）
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master # 使用ssh链接服务器
+        with:
+          host: ${{ secrets.TEST_HOST }}
+          username: ${{ secrets.TEST_USERNAME }}
+          key: ${{ secrets.TEST_PRIVATEKEY }}
+          port: ${{ secrets.PORT }}
+          script: | # 执行命令（运行到服务器）cd：要确保服务器有这个目录； tar：解压；
+            cd /root/docker/code/WeCuit
+            tar -zxvf dist.tgz
+            rm -rf admin-ui
+            mv dist admin-ui
+            rm -f dist.tgz
