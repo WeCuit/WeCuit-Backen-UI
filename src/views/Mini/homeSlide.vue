@@ -34,9 +34,10 @@
           <template #header>
             <div class="slide-item">
               <el-row>
-                <el-col :span="8">文本</el-col>
-                <el-col :span="8">图片</el-col>
-                <el-col :span="8">操作</el-col>
+                <el-col :span="6">文本</el-col>
+                <el-col :span="6">图片</el-col>
+                <el-col :span="6">数据</el-col>
+                <el-col :span="6">操作</el-col>
               </el-row>
               <el-divider style="margin:0;"></el-divider>
             </div>
@@ -44,9 +45,10 @@
           <template #item="{element, index}">
             <div class="slide-item">
               <el-row>
-                <el-col :span="8" class="ele">{{element.text}}</el-col>
-                <el-col :span="8" class="ele">{{element.path}}</el-col>
-                <el-col :span="8" class="ele">
+                <el-col :span="6" class="ele">{{element.text}}</el-col>
+                <el-col :span="6" class="ele">{{element.path}}</el-col>
+                <el-col :span="6" class="ele">{{element.data}}</el-col>
+                <el-col :span="6" class="ele">
                   <div style="display:flex;justify-content: center;">
                     <el-button
                       type="primary"

@@ -4,6 +4,9 @@
       <el-form-item label="文本">
         <el-input v-model="item.text"></el-input>
       </el-form-item>
+      <el-form-item label="数据">
+        <el-input v-model="item.data"></el-input>
+      </el-form-item>
       <el-form-item label="图片">
         <img :src="item.path" class="slide-img" />
         <ImageSelector @handle-img-data="handleSelectedImgData($event)" />
@@ -33,7 +36,9 @@ export default defineComponent({
       type: Object,
       default: () => ({
         path: '',
-        text: ''
+        text: '',
+        type: 'html',
+        data: ''
       })
     }
   },
@@ -43,7 +48,9 @@ export default defineComponent({
       outerVisible: false,
       item: {
         path: '',
-        text: ''
+        text: '',
+        type: 'html',
+        data: ''
       } as {
         [k: string]: string
       }
@@ -52,6 +59,7 @@ export default defineComponent({
 
     onMounted(() => {
       state.item = editData.value
+      state.item.type = 'html'
     })
 
     watch(editData, (newValue) => {

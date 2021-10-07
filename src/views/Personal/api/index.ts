@@ -7,9 +7,9 @@ import request from '@/utils/request';
 // }
 
 // 获取用户信息
-export const getUserInfo = ()=>request2.get("user/admin/info")
+export const getUserInfo = ()=>request2.get("user/info")
 // 修改用户信息
-export const putUserInfo = (data: any)=>request2.put("user/admin/info", data)
+export const putUserInfo = (data: any)=>request2.put("user/info", data)
 
 class Service{
   

@@ -4,7 +4,8 @@ import legacy from '@vitejs/plugin-legacy'
 import { resolve } from 'path';
 import styleImport from 'vite-plugin-style-import'
 
-const API = 'http://127.0.0.1:8080'
+// const API = 'http://127.0.0.1:8080'
+const API = 'https://test.cuit.api.jysafe.cn'
 
 // https://vitejs.dev/config/
 export default defineConfig({
