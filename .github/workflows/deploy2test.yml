@@ -56,6 +56,7 @@ jobs:
           script: | # 执行命令（运行到服务器）cd：要确保服务器有这个目录； tar：解压；
             cd /root/docker/code/WeCuit
             tar -zxvf dist.tgz
-            rm -rf admin-ui
-            mv dist admin-ui
+            rm -rf admin-ui/*
+            mv dist/* admin-ui
+            rm -rf dist
             rm -f dist.tgz
