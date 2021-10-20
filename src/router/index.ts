@@ -311,7 +311,7 @@ export const asyncRoutes:Array<RouteRecordRaw> = [
             '/zh-CN': '复制文本',
             '/en-US': 'Copy Text'
           },
-          icon: 'home',
+          icon: 'el-icon-edit-outline',
         },
       },
     ],
@@ -605,7 +605,7 @@ export const asyncRoutes:Array<RouteRecordRaw> = [
             '/zh-CN': '文件上传',
             '/en-US': 'File Upload'
           },
-          icon: 'home',
+          icon: 'el-icon-upload',
         },
       },
     ],

@@ -1,34 +1,36 @@
 <template>
   <section class="app-main">
-    <el-tabs
-      id="Tabs"
+    <el-tabs id="Tabs"
       v-model="currentIndex"
       type="card"
       closable
       @tab-click="clickTab"
-      @tab-remove="removeTab"
-    >
+      @tab-remove="removeTab">
       <el-tab-pane
         v-for="item in tabsOption"
         :key="item.route"
         :closable="item.route !== '/home'"
         :label="item.title[lang]"
-        :name="item.route"
-      ></el-tab-pane>
-
-      <router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" :key="$route.path" />
-        </transition>
-      </router-view>
-      <router-view v-else v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <keep-alive>
-            <component :is="Component" :key="$route.path" />
-          </keep-alive>
-        </transition>
-      </router-view>
+        :name="item.route" />
     </el-tabs>
+    <router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" :key="$route.path" />
+      </transition>
+    </router-view>
+
+    <router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" :key="$route.path" />
+      </transition>
+    </router-view>
+    <router-view v-else v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <keep-alive>
+          <component :is="Component" :key="$route.path" />
+        </keep-alive>
+      </transition>
+    </router-view>
   </section>
 </template>
 <script lang="ts">
