@@ -97,7 +97,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       {
         path: '/article/edit',
         name: 'articleEdit',
-        
+
         component: () => import(/* webpackChunkName: "home" */ '@/views/Article/edit.vue'),
         meta: {
           title:{
@@ -148,7 +148,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   }, },
 ];
 
-// 异步路由   受请求 /api/auth/permission/routes 控制
+// 异步路由
 export const asyncRoutes:Array<RouteRecordRaw> = [
   {
     path: '/mini',
@@ -728,8 +728,6 @@ export const asyncRoutes:Array<RouteRecordRaw> = [
       },
     ],
   },
-
-
 ];
 
 const router = createRouter({
