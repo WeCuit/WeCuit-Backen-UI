@@ -1,1 +1,0 @@
-System.register(["./index-legacy.cc464e22.js"],(function(n){"use strict";var e;return{setters:[function(n){e=n.a}],execute:function(){n("g",(function(){return e.get("/mini/index-slide")})),n("u",(function(n){return e.patch("/mini/index-slide",n)})),n("a",(function(){return e.get("/mini/config/other")})),n("p",(function(n){return e.put("/mini/config/other",n)}))}}}));
