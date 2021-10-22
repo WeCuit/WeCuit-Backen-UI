@@ -124,6 +124,7 @@ export default defineComponent({
       // clear()
       sessionStorage.removeItem('auth')
       sessionStorage.removeItem('accessToken')
+      localStorage.removeItem('role')
 
       router.replace('/login')
     }

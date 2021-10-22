@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import request2 from '@/utils/axios';
 
 const permissionApi={
-  queryAuthedRoutes: '/user/admin/routes',
+  queryAuthedRoutes: '/user/routes',
   queryPermissions:'/api/auth/permission/permissions'
 }
 

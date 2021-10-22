@@ -1,6 +1,6 @@
 {
     "eslint.format.enable": true,
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "liveServer.settings.port": 5501,
     // 以下为stylus配置
  "stylusSupremacy.insertColons": false, // 是否插入冒号

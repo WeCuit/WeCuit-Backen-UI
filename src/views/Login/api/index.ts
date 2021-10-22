@@ -7,7 +7,6 @@ const loginApi={
   sendCaptcha:'/api/auth/email/sendCaptcha',
   forgetPassword:'/api/auth/email/forgot-password',
   resetPassword:`/api/auth/user/reset-password`,
-  permissionRoutes:'/api/auth/permission/routes',
   userInfo:'/api/auth/user/userInfo'
 }
 
@@ -22,19 +21,19 @@ class Service{
   /**
    * @descript POST  用户注册
   */
-      static postRegister(data: any) {
-        return request({
-          url: loginApi.userRegister,
-          method: 'POST',
-          json: true,
-          data
-        }).then((res) => {
-          if (res.status === 0) {
-            return Promise.resolve(res)
-          }
-          return Promise.reject(res)
-        })
+  static postRegister(data: any) {
+    return request({
+      url: loginApi.userRegister,
+      method: 'POST',
+      json: true,
+      data
+    }).then((res) => {
+      if (res.status === 0) {
+        return Promise.resolve(res)
       }
+      return Promise.reject(res)
+    })
+  }
 
  /**
    * @description   POST 发送验证码 /auth/email/sendCaptcha
@@ -86,24 +85,6 @@ class Service{
       return Promise.reject(res)
     })
   }
-
-    /**
-   * @description POST 保存授权菜单权限
-  */
-     static postAuthPermission(data: any) {
-      return request({
-        url: loginApi.permissionRoutes,
-        method: 'POST',
-        json: true,
-        data
-      }).then((res) => {
-          console.log(res);
-        if (res.status === 0) {
-        return Promise.resolve(res)
-        }
-        return Promise.reject(res)
-      })
-    }
 
     /**
      * @description POST 查询用户信息

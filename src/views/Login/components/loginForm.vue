@@ -187,9 +187,6 @@ export default defineComponent({
           if (auth) {
             // 将角色存储到全局vuex roles
             console.log(userInfo)
-            if (userInfo.status === 0) {
-              store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
-            }
             // 先进行异步路由处理
             store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
             store.dispatch('permissionModule/getPermissions')
@@ -247,7 +244,7 @@ export default defineComponent({
                   message: err.message
                 })
               })
-          } catch (err) {
+          } catch (err:any) {
             ElMessage({
               type: 'error',
               message: err.message

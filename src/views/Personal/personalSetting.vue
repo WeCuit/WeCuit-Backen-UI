@@ -43,9 +43,9 @@
                         ></el-input>
                       </el-form-item>-->
 
-                      <!-- <el-form-item label="联系电话" prop="mobile">
-                        <el-input v-model="settingForm.mobile" placeholder="请输入11位大陆手机号码"></el-input>
-                      </el-form-item>-->
+                      <el-form-item label="密码" prop="password">
+                        <el-input v-model="settingForm.password" placeholder="密码"></el-input>
+                      </el-form-item>
 
                       <el-form-item>
                         <el-button type="primary" :loading="updateLoading" @click="submitForm()">更新</el-button>
@@ -195,6 +195,7 @@ export default defineComponent({
     const settingForm = reactive({
       email: '',
       nickname: '',
+      password: '',
       desc: '',
       mobile: '',
       avatar: '../../assets/avatar-default.jpg'
