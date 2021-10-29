@@ -49,6 +49,7 @@ Give a ⭐️ if this project helped you!
 - [x] 支持切换主题色:一键换肤
 - [x] 指令权限：v-permisson /全局方法：$permission (参考 tableList.vue)
 - [x] 国际化
+- [x] 项目看板
 
 ## 正在完成功能 | The functionality is being completed
 
@@ -157,7 +158,7 @@ git merge upstream/main
 
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d41b5fec542444b4a28c00135ce27d42~tplv-k3u1fbpfcp-watermark.image" width="180px" />
 
-<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6133230c9a6d49fdb0cd3e5197564da2~tplv-k3u1fbpfcp-watermark.image??" width="180px" />
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8222ba7cb2504f5c9f8e4bfdd1f0535e~tplv-k3u1fbpfcp-watermark.image?" width="180px" />
 
 ## 赞助 | Sponsored
 
