@@ -152,7 +152,7 @@ export default defineComponent({
             // 将角色存储到全局vuex roles
             console.log(userInfo)
             // 先进行异步路由处理
-            store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
+            store.dispatch('permissionModule/getPermissionRoutes', userInfo.data)
             store.dispatch('permissionModule/getPermissions')
             sessionStorage.setItem('auth', 'true')
             sessionStorage.setItem('tokenName', auth[0])

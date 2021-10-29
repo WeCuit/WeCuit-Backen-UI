@@ -29,6 +29,7 @@ export default defineComponent({
     }
     onMounted(() => {
       store.dispatch('permissionModule/getPermissions')
+      store.dispatch('permissionModule/getPermissionRoutes')
     })
     resizeHeight()
     const locale = computed(() => {

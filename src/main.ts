@@ -20,11 +20,11 @@ import 'element-plus/theme-chalk/index.css';
 
 import '@/mock'
 
-const roles =  localStorage.getItem('role');
+const roles = localStorage.getItem('role');
 
 if(roles){
   // 在挂载路由之前，先进行异步路由处理
-  store.dispatch('permissionModule/getPermissonRoutes',{roleName:roles});
+  store.dispatch('permissionModule/getPermissionRoutes', {roleName:roles});
 }
 
 store.dispatch('permissionModule/getRoutes');
