@@ -1,15 +1,6 @@
 <template>
   <div class="form-container">
-    <el-form
-      v-if="showReset"
-      ref="resetRef"
-      :model="resetForm"
-      status-icon
-      :hide-required-asterisk="true"
-      :rules="rules"
-      label-width="100px"
-      class="login-form"
-    >
+    <el-form v-if="showReset" ref="resetRef" :model="resetForm" status-icon :hide-required-asterisk="true" :rules="rules" label-width="100px" class="login-form">
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="resetForm.email" autocomplete="off" placeholder="请输入注册邮箱">
           <template #append>
@@ -18,20 +9,10 @@
         </el-input>
       </el-form-item>
       <el-form-item label="验证码" prop="capcha">
-        <el-input
-          v-model.number="resetForm.capcha"
-          maxlength="6"
-          autocomplete="off"
-          placeholder="请输入验证码"
-        ></el-input>
+        <el-input v-model.number="resetForm.capcha" maxlength="6" autocomplete="off" placeholder="请输入验证码"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input
-          v-model="resetForm.password"
-          type="password"
-          autocomplete="off"
-          placeholder="请输入密码"
-        ></el-input>
+        <el-input v-model="resetForm.password" type="password" autocomplete="off" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
         <el-input v-model="resetForm.checkPass" type="password" autocomplete="off"></el-input>
@@ -42,9 +23,7 @@
           <el-button type="primary" style="width: 100%" @click="handleResetPwd()">确认重置</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login" @click="handleToLogin">
-            <em>去登陆</em>
-          </span>
+          <span class="to-login" @click="handleToLogin"><em>去登陆</em></span>
         </div>
       </el-form-item>
     </el-form>
@@ -52,7 +31,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
-import { ElMessage } from 'element-plus/lib/components'
+import { ElMessage } from 'element-plus/lib/components/message'
 import { encrypt } from '@/utils/aes' // aes 密码加密
 import Service from '../api/index'
 
@@ -223,29 +202,35 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
-.form-container {
-  width: 100%;
-  :deep .el-input-group__append,
-  .el-input-group__prepend {
-    padding: 0px 7px;
+<style lang="stylus" scoped>
+.form-container{
+  width:100%
+
+  :deep(.el-input-group__append) {
+    padding:0px 7px;
   }
-  .login-form {
-    width: 100%;
+  
+  :deep(.el-input-group__prepend) {
+    padding:0px 7px;
+  }
+
+  .login-form{
+    width:100%;
     margin: 0 auto;
   }
-  .go-login {
+  
+  .go-login{
     font-size: 12px;
     cursor: pointer;
-    display: flex;
-    flex-direction: row;
+    display:flex;
+    flex-direction:row ;
     justify-content: center;
-    align-items: center;
+    align-items :center;
 
-    .to-login {
+    .to-login{
       color: #9fa2a8;
 
-      em {
+      em{
         color: #2878ff;
       }
     }
