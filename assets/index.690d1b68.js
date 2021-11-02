@@ -1,0 +1,1 @@
+import{r as s}from"./index.8b43220d.js";import{r as e}from"./request.97b551b2.js";const r=()=>s.get("user/info"),t=e=>s.put("user/info",e);class o{static getPersonTags(){return e({url:"/api/personal/tags",method:"get",json:!0}).then((s=>0===s.status?Promise.resolve(s):Promise.reject(s)))}}export{o as S,r as g,t as p};
