@@ -82,6 +82,7 @@ import { useRouter } from 'vue-router'
 import { toFullScreen, exitFullScreen } from '@/utils/screen'
 import { useStore } from '@/store/index'
 import { langConfig } from '@/utils/constant/config'
+import { doLogout } from './api.js'
 
 export default defineComponent({
   name: 'Navbar',
@@ -122,11 +123,13 @@ export default defineComponent({
     }
     const logout = () => {
       // clear()
-      sessionStorage.removeItem('auth')
-      sessionStorage.removeItem('accessToken')
-      localStorage.removeItem('role')
-
-      router.replace('/login')
+      doLogout().finally(()=>{
+        sessionStorage.removeItem('auth')
+        sessionStorage.removeItem('tokenName')
+        sessionStorage.removeItem('accessToken')
+        localStorage.removeItem('role')
+        router.replace('/login')
+      })
     }
 
     return {
